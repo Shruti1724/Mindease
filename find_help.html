@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Find Help - MindEase</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Additional styles specific to find_help page */
+    .page-hero {
+      height: 50vh;
+      background: url('./web bg.png') no-repeat center center;
+      background-size: cover;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding-top: 70px;
+    }
+    
+    .page-hero::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+    }
+    
+    .page-hero .hero-content {
+      position: relative;
+      z-index: 10;
+      max-width: 600px;
+      padding: 20px;
+      color: white;
+    }
+    
+    .page-hero h1 {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    
+    .page-hero p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+    }
+    
+    .location-search {
+      background-color: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      max-width: 600px;
+      margin: 0 auto 30px;
+    }
+    
+    .location-form {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .location-input {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    
+    .location-btn {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+    
+    .location-btn:hover {
+      background-color: var(--dark-color);
+    }
+    
+    .location-result {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 5px;
+      background-color: var(--light-color);
+      display: none;
+    }
+    
+    .location-result.active {
+      display: block;
+    }
+    
+    .therapist-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 30px;
+      justify-content: center;
+    }
+    
+    .filter-btn {
+      background-color: var(--light-color);
+      border: 1px solid var(--accent-color);
+      color: var(--dark-color);
+      padding: 8px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .filter-btn:hover, .filter-btn.active {
+      background-color: var(--accent-color);
+      color: white;
+    }
+    
+    .therapist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 25px;
+      margin-bottom: 50px;
+    }
+    
+    .therapist-card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+    
+    .therapist-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .therapist-image {
+      height: 200px;
+      background-size: cover;
+      background-position: center;
+    }
+    
+    .therapist-info {
+      padding: 20px;
+    }
+    
+    .therapist-name {
+      font-size: 1.3rem;
+      color: var(--primary-color);
+      margin-bottom: 5px;
+    }
+    
+    .therapist-title {
+      color: var(--accent-color);
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+    
+    .therapist-specialties {
+      margin: 10px 0;
+    }
+    
+    .specialty-tag {
+      display: inline-block;
+      background-color: rgba(137, 123, 104, 0.1);
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      margin-right: 5px;
+      margin-bottom: 5px;
+    }
+    
+    .therapist-contact {
+      margin-top: 15px;
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .contact-btn {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 8px 15px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: background-color 0.3s ease;
+    }
+    
+    .contact-btn:hover {
+      background-color: var(--dark-color);
+    }
+    
+    .map-btn {
+      background-color: var(--accent-color);
+      color: white;
+      padding: 8px 15px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: background-color 0.3s ease;
+    }
+    
+    .map-btn:hover {
+      background-color: var(--dark-color);
+    }
+    
+    .contact-section {
+      background-color: var(--secondary-color);
+      padding: 50px 0;
+    }
+    
+    .contact-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      padding: 30px;
+    }
+    
+    .contact-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+      background-color: var(--light-color);
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--accent-color);
+    }
+    
+    textarea.form-control {
+      min-height: 150px;
+      resize: vertical;
+    }
+    
+    .submit-btn {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      grid-column: 1 / -1;
+      justify-self: center;
+    }
+    
+    .submit-btn:hover {
+      background-color: var(--dark-color);
+    }
+    
+    .contact-info {
+      margin-top: 30px;
+      text-align: center;
+    }
+    
+    .contact-info-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+    
+    .contact-info-item i {
+      margin-right: 10px;
+      color: var(--primary-color);
+    }
+    
+    .no-results {
+      text-align: center;
+      padding: 30px;
+      background-color: var(--light-color);
+      border-radius: 10px;
+      margin: 30px 0;
+      display: none;
+    }
+    
+    .no-results.active {
+      display: block;
+    }
+    
+    @media (max-width: 768px) {
+      .contact-form {
+        grid-template-columns: 1fr;
+      }
+      
+      .location-form {
+        flex-direction: column;
+      }
+    }
+
+    /* Support Groups Section */
+    .support-groups {
+      padding: 50px 0;
+      background-color: var(--light-color);
+    }
+
+    .support-groups .section-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .support-groups .section-header h2 {
+      color: var(--primary-color);
+      font-size: 2rem;
+      margin-bottom: 15px;
+    }
+
+    .support-groups .section-header p {
+      color: var(--dark-color);
+      opacity: 0.8;
+    }
+
+    .support-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .support-card {
+      background-color: white;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: transform 0.3s ease;
+      position: relative;
+      height: 100%;
+    }
+
+    .support-card:hover {
+      transform: translateY(-10px);
+    }
+
+    .support-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    }
+
+    .support-card-content {
+      padding: 25px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .support-card-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .support-card-icon {
+      width: 50px;
+      height: 50px;
+      background-color: var(--secondary-color);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 15px;
+    }
+
+    .support-card-icon i {
+      font-size: 1.5rem;
+      color: var(--primary-color);
+    }
+
+    .support-card-title {
+      font-size: 1.3rem;
+      color: var(--primary-color);
+      margin: 0;
+    }
+
+    .support-card-platform {
+      font-size: 0.9rem;
+      color: var(--accent-color);
+      margin-top: 5px;
+    }
+
+    .support-card-details {
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+
+    .support-card-details p {
+      color: var(--dark-color);
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+
+    .support-card-features {
+      margin: 15px 0;
+      padding: 10px;
+      background-color: var(--secondary-color);
+      border-radius: 8px;
+    }
+
+    .support-card-features ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .support-card-features li {
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+    }
+
+    .support-card-features i {
+      color: var(--primary-color);
+      margin-right: 8px;
+      font-size: 0.9rem;
+    }
+
+    .support-card-members {
+      display: flex;
+      align-items: center;
+      color: var(--accent-color);
+      font-size: 0.9rem;
+      margin-bottom: 15px;
+    }
+
+    .support-card-members i {
+      margin-right: 5px;
+    }
+
+    .support-card-link {
+      display: inline-block;
+      background-color: var(--primary-color);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background-color 0.3s ease;
+      text-align: center;
+      margin-top: auto;
+    }
+
+    .support-card-link:hover {
+      background-color: var(--dark-color);
+    }
+
+    .support-card-upcoming {
+      margin-top: 15px;
+      padding: 10px;
+      background-color: var(--secondary-color);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      color: var(--dark-color);
+    }
+
+    .support-card-upcoming i {
+      color: var(--primary-color);
+      margin-right: 5px;
+    }
+
+    @media (max-width: 768px) {
+      .support-cards {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Emergency Section */
+    .emergency-section {
+      padding: 50px 0;
+      background-color: var(--light-color);
+      margin-bottom: 30px;
+    }
+
+    .emergency-section .section-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .emergency-section .section-header h2 {
+      color: var(--primary-color);
+      font-size: 2rem;
+      margin-bottom: 15px;
+    }
+
+    .emergency-section .section-header p {
+      color: var(--dark-color);
+      opacity: 0.8;
+    }
+
+    .emergency-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .emergency-card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .emergency-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .emergency-icon {
+      font-size: 2rem;
+      color: var(--primary-color);
+      margin-bottom: 15px;
+    }
+
+    .emergency-title {
+      font-size: 1.2rem;
+      color: var(--dark-color);
+      margin-bottom: 10px;
+    }
+
+    .emergency-number {
+      font-size: 1.5rem;
+      color: var(--accent-color);
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .emergency-description {
+      color: var(--dark-color);
+      opacity: 0.8;
+      font-size: 0.9rem;
+      margin-bottom: 15px;
+    }
+
+    .emergency-hours {
+      color: var(--accent-color);
+      font-size: 0.9rem;
+      font-style: italic;
+    }
+
+    @media (max-width: 768px) {
+      .emergency-cards {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index1.html" class="logo">
+        <i class="fas fa-brain"></i>
+        MindEase
+      </a>
+      <ul id="menu">
+        <li><a href="index1.html">Home</a></li>
+        <li><a href="index1.html#about">About</a></li>
+        <li><a href="meditation.html">Meditation</a></li>
+        <li><a href="breathing.html">Breathing</a></li>
+        <li><a href="journal.html">Journal</a></li>
+        <li><a href="find_help.html">Find Help</a></li>
+        <li><a href="index1.html#contact">Contact</a></li>
+        <li><a href="login.html" id="loginLink">Login</a></li>
+        <li><a href="#" id="logoutLink" style="display: none;">Logout</a></li>
+      </ul>
+      <div class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+      </div>
+    </nav>
+  </header>
+  
+  <section id="find-help-hero" class="page-hero">
+    <div class="hero-content">
+      <h1>Find a Therapist</h1>
+      <p>Connect with mental health professionals in your area</p>
+    </div>
+  </section>
+  
+  <section id="find-help">
+    <div class="container">
+      <div class="section-header">
+        <h2>Find a Therapist Near You</h2>
+        <p>Enter your location to find qualified mental health professionals in your area</p>
+      </div>
+      
+      <div class="location-search">
+        <form id="locationForm" class="location-form">
+          <input type="text" id="locationInput" class="location-input" placeholder="Enter your city or zip code" required>
+          <button type="submit" class="location-btn">Search</button>
+        </form>
+        <div id="locationResult" class="location-result">
+          <p>Showing therapists in: <span id="locationDisplay"></span></p>
+        </div>
+      </div>
+      
+      <div class="therapist-filters">
+        <button class="filter-btn active" data-filter="all">All Therapists</button>
+        <button class="filter-btn" data-filter="psychologist">Psychologists</button>
+        <button class="filter-btn" data-filter="psychiatrist">Psychiatrists</button>
+        <button class="filter-btn" data-filter="counselor">Counselors</button>
+        <button class="filter-btn" data-filter="online">Online Sessions</button>
+      </div>
+      
+      <div id="noResults" class="no-results">
+        <h3>No therapists found in your area</h3>
+        <p>Try searching for a different location or consider online therapy options.</p>
+      </div>
+      
+      <div class="therapist-grid" id="therapistGrid">
+        <!-- Therapist cards will be dynamically added here after search -->
+      </div>
+    </div>
+  </section>
+  
+  <section class="emergency-section">
+    <div class="section-header">
+      <h2>🚨 Emergency Support</h2>
+      <p>If you or someone you know is in crisis, these helplines are available 24/7</p>
+    </div>
+    <div class="emergency-cards">
+      <div class="emergency-card">
+        <div class="emergency-icon">
+          <i class="fas fa-phone-alt"></i>
+        </div>
+        <h3 class="emergency-title">National Emergency Number</h3>
+        <div class="emergency-number">112</div>
+        <p class="emergency-description">For any emergency situation requiring immediate assistance</p>
+        <div class="emergency-hours">Available 24/7</div>
+      </div>
+
+      <div class="emergency-card">
+        <div class="emergency-icon">
+          <i class="fas fa-headset"></i>
+        </div>
+        <h3 class="emergency-title">iCall Helpline</h3>
+        <div class="emergency-number">9152987821</div>
+        <p class="emergency-description">Professional counseling and emotional support</p>
+        <div class="emergency-hours">Mon-Sat: 10 AM - 8 PM</div>
+      </div>
+
+      <div class="emergency-card">
+        <div class="emergency-icon">
+          <i class="fas fa-hands-helping"></i>
+        </div>
+        <h3 class="emergency-title">AASRA</h3>
+        <div class="emergency-number">9820466726</div>
+        <p class="emergency-description">Suicide prevention and emotional support</p>
+        <div class="emergency-hours">Available 24/7</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="support-groups">
+    <div class="section-header">
+      <h2>Support Groups & Communities</h2>
+      <p>Join these supportive communities to connect with others on similar journeys</p>
+    </div>
+    <div class="support-cards">
+      <!-- Pune-Based Support Groups -->
+      <div class="support-card">
+        <div class="support-card-content">
+          <div class="support-card-header">
+            <div class="support-card-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <div>
+              <h3 class="support-card-title">Pune Depression Anxiety Support Group</h3>
+              <div class="support-card-platform">Platform: Meetup.com</div>
+            </div>
+          </div>
+          <div class="support-card-details">
+            <p>Provides a space for individuals dealing with depression, anxiety, loneliness, and emotional challenges to share experiences and support each other.</p>
+            <div class="support-card-features">
+              <ul>
+                <li><i class="fas fa-check-circle"></i> Weekly in-person meetings</li>
+                <li><i class="fas fa-check-circle"></i> Professional facilitator</li>
+                <li><i class="fas fa-check-circle"></i> Confidential environment</li>
+                <li><i class="fas fa-check-circle"></i> Free to join</li>
+              </ul>
+            </div>
+          </div>
+          <a href="https://www.meetup.com/pune-depression-anxiety-support-meetup/" target="_blank" class="support-card-link">Visit Group Page</a>
+        </div>
+      </div>
+
+      <div class="support-card">
+        <div class="support-card-content">
+          <div class="support-card-header">
+            <div class="support-card-icon">
+              <i class="fas fa-heart"></i>
+            </div>
+            <div>
+              <h3 class="support-card-title">Pune Stress & Anxiety Support Group</h3>
+              <div class="support-card-platform">Platform: Meetup.com</div>
+            </div>
+          </div>
+          <div class="support-card-details">
+            <p>Aims to help individuals realize they are not alone in their struggles, offering support through shared experiences and activities like yoga and meditation.</p>
+            <div class="support-card-features">
+              <ul>
+                <li><i class="fas fa-check-circle"></i> Bi-weekly meetings</li>
+                <li><i class="fas fa-check-circle"></i> Mindfulness activities</li>
+                <li><i class="fas fa-check-circle"></i> Group discussions</li>
+                <li><i class="fas fa-check-circle"></i> Expert guest speakers</li>
+              </ul>
+            </div>
+            <div class="support-card-upcoming">
+              <i class="fas fa-calendar-alt"></i>
+              Upcoming Events: Multiple virtual sessions scheduled, including on April 19, 2025
+            </div>
+          </div>
+          <a href="https://www.meetup.com/stress-anxiety-isolation-depression-support-group/" target="_blank" class="support-card-link">Visit Group Page</a>
+        </div>
+      </div>
+
+      <!-- Online Mental Health Communities -->
+      <div class="support-card">
+        <div class="support-card-content">
+          <div class="support-card-header">
+            <div class="support-card-icon">
+              <i class="fab fa-discord"></i>
+            </div>
+            <div>
+              <h3 class="support-card-title">Mental Health Support Community</h3>
+              <div class="support-card-platform">Platform: Discord</div>
+            </div>
+          </div>
+          <div class="support-card-members">
+            <i class="fas fa-user-friends"></i>
+            Over 10,000 members
+          </div>
+          <div class="support-card-details">
+            <p>Offers a safe space for individuals to discuss mental health issues, share experiences, and receive support from a global community.</p>
+            <div class="support-card-features">
+              <ul>
+                <li><i class="fas fa-check-circle"></i> 24/7 active community</li>
+                <li><i class="fas fa-check-circle"></i> Multiple support channels</li>
+                <li><i class="fas fa-check-circle"></i> Anonymous participation</li>
+                <li><i class="fas fa-check-circle"></i> Resource sharing</li>
+              </ul>
+            </div>
+          </div>
+          <a href="https://discord.com/invite/ftmh" target="_blank" class="support-card-link">Join Discord Server</a>
+        </div>
+      </div>
+
+      <div class="support-card">
+        <div class="support-card-content">
+          <div class="support-card-header">
+            <div class="support-card-icon">
+              <i class="fas fa-fist-raised"></i>
+            </div>
+            <div>
+              <h3 class="support-card-title">Fight Through Mental Health</h3>
+              <div class="support-card-platform">Platform: Discord</div>
+            </div>
+          </div>
+          <div class="support-card-members">
+            <i class="fas fa-user-friends"></i>
+            Over 17,000 members
+          </div>
+          <div class="support-card-details">
+            <p>Provides a community for individuals to come together and support each other through mental health challenges with a focus on resilience and recovery.</p>
+            <div class="support-card-features">
+              <ul>
+                <li><i class="fas fa-check-circle"></i> Daily check-ins</li>
+                <li><i class="fas fa-check-circle"></i> Recovery stories</li>
+                <li><i class="fas fa-check-circle"></i> Crisis support</li>
+                <li><i class="fas fa-check-circle"></i> Wellness challenges</li>
+              </ul>
+            </div>
+          </div>
+          <a href="https://discord.com/invite/ftmh" target="_blank" class="support-card-link">Join Discord Server</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section id="contact" class="contact-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Contact Us</h2>
+        <p>Have questions? We're here to help</p>
+      </div>
+      
+      <div class="contact-container">
+        <form id="contactForm" class="contact-form">
+          <div class="form-group">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" name="subject" class="form-control" required>
+          </div>
+          <div class="form-group full-width">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" class="form-control" required></textarea>
+          </div>
+          <button type="submit" class="submit-btn">Send Message</button>
+        </form>
+          <div class="contact-info">
+            <p> Contact us at: </p>
+          </div>
+          <div class="contact-info-item">
+            <i class="fas fa-envelope"></i>
+            <p>support@mindease.com</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <i class="fas fa-brain"></i> MindEase
+        </div>
+      </div>
+      <div class="copyright">
+        <p>&copy; 2025 MindEase. All rights reserved.</p>
+        <p>Made by Shruti Jaggi</p>
+      </div>
+    </div>
+  </footer>
+  
+  <script src="script.js"></script>
+  <script>
+    // Wait for the DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      // Menu toggle functionality
+      const menuToggle = document.getElementById('menuToggle');
+      const menu = document.getElementById('menu');
+      
+      if (menuToggle && menu) {
+        menuToggle.addEventListener('click', function() {
+          menu.classList.toggle('active');
+        });
+      }
+      
+      // Therapist data
+      let therapistData = null;
+      
+      // Fetch therapist data from JSON file
+      async function loadTherapistData() {
+        try {
+          const response = await fetch('therapists.json');
+          if (!response.ok) {
+            throw new Error('Failed to load therapist data');
+          }
+          therapistData = await response.json();
+          
+          // Initially hide the no results message
+          document.getElementById('noResults').classList.remove('active');
+          
+          // Clear any existing therapist cards
+          document.getElementById('therapistGrid').innerHTML = '';
+        } catch (error) {
+          console.error('Error loading therapist data:', error);
+          document.getElementById('therapistGrid').innerHTML = '<div class="error">Unable to load therapist data. Please try again later.</div>';
+        }
+      }
+      
+      // Load therapist data when page loads
+      loadTherapistData();
+      
+      // Location search functionality
+      const locationForm = document.getElementById('locationForm');
+      const locationInput = document.getElementById('locationInput');
+      const locationResult = document.getElementById('locationResult');
+      const locationDisplay = document.getElementById('locationDisplay');
+      const therapistGrid = document.getElementById('therapistGrid');
+      const noResults = document.getElementById('noResults');
+      
+      // Function to filter therapists by location
+      function filterTherapistsByLocation(location) {
+        if (!therapistData) return;
+        
+        // Show loading state
+        therapistGrid.innerHTML = '<div class="loading">Loading therapists...</div>';
+        
+        // Filter therapists - make location matching more flexible
+        const filteredTherapists = therapistData.therapists.filter(therapist => {
+          const therapistLocation = therapist.location.toLowerCase();
+          const searchLocation = location.toLowerCase();
+          return therapistLocation.includes(searchLocation) || searchLocation.includes(therapistLocation);
+        });
+        
+        // Clear loading state
+        therapistGrid.innerHTML = '';
+        
+        // Check if we have results
+        if (filteredTherapists.length > 0) {
+          // Hide no results message
+          noResults.classList.remove('active');
+          
+          // Display therapists
+          filteredTherapists.forEach(therapist => {
+            const therapistCard = createTherapistCard(therapist);
+            therapistGrid.appendChild(therapistCard);
+          });
+        } else {
+          // Show no results message
+          noResults.classList.add('active');
+        }
+      }
+      
+      // Function to create therapist card
+      function createTherapistCard(therapist) {
+        const card = document.createElement('div');
+        card.className = 'therapist-card';
+        card.setAttribute('data-category', therapist.specialization.join(' ').toLowerCase());
+        card.setAttribute('data-location', therapist.location.toLowerCase());
+        
+        // Format languages
+        const languages = therapist.languages.join(', ');
+        
+        card.innerHTML = `
+          <div class="therapist-info">
+            <h3 class="therapist-name">${therapist.name}</h3>
+            <p class="therapist-title">${therapist.qualification}</p>
+            <div class="therapist-specialties">
+              ${therapist.specialization.map(specialty => `<span class="specialty-tag">${specialty}</span>`).join('')}
+            </div>
+            <div class="therapist-details">
+              <p><strong>Languages:</strong> ${languages}</p>
+              <p><strong>Experience:</strong> ${therapist.experience}</p>
+              <p><strong>Location:</strong> ${therapist.location}</p>
+            </div>
+            <div class="therapist-contact">
+              <a href="https://psychologyindia.com/" target="_blank" class="contact-btn"><i class="fas fa-user"></i> View Profile</a>
+            </div>
+          </div>
+        `;
+        
+        return card;
+      }
+      
+      if (locationForm) {
+        locationForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          
+          const location = locationInput.value.trim();
+          
+          if (!location) {
+            alert('Please enter a location');
+            return;
+          }
+          
+          // Show the location result
+          locationResult.classList.add('active');
+          locationDisplay.textContent = location;
+          
+          // Filter therapists for the location
+          filterTherapistsByLocation(location);
+        });
+      }
+      
+      // Filter functionality
+      const filterButtons = document.querySelectorAll('.filter-btn');
+      
+      filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          // Remove active class from all buttons
+          filterButtons.forEach(btn => btn.classList.remove('active'));
+          
+          // Add active class to clicked button
+          this.classList.add('active');
+          
+          const filter = this.getAttribute('data-filter');
+          const therapistCards = document.querySelectorAll('.therapist-card');
+          
+          let hasResults = false;
+          
+          therapistCards.forEach(card => {
+            const cardCategory = card.getAttribute('data-category');
+            
+            if (filter === 'all' || cardCategory.includes(filter)) {
+              card.style.display = 'block';
+              hasResults = true;
+            } else {
+              card.style.display = 'none';
+            }
+          });
+          
+          // Show or hide the no results message
+          if (hasResults) {
+            noResults.classList.remove('active');
+          } else {
+            noResults.classList.add('active');
+          }
+        });
+      });
+      
+      // Contact form submission
+      const contactForm = document.getElementById('contactForm');
+      if (contactForm) {
+        contactForm.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          
+          // Basic form validation
+          const name = document.getElementById('name').value;
+          const email = document.getElementById('email').value;
+          const subject = document.getElementById('subject').value;
+          const message = document.getElementById('message').value;
+          
+          if (!name || !email || !subject || !message) {
+            alert('Please fill in all required fields.');
+            return;
+          }
+          
+          // Create data object
+          const formData = {
+            name: name,
+            email: email,
+            phone: document.getElementById('phone').value,
+            subject: subject,
+            message: message
+          };
+          
+          try {
+            console.log('Sending form data:', formData);
+            
+            // Send form data to Node.js server
+            const response = await fetch('http://localhost:3000/api/contact', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+              },
+              body: JSON.stringify(formData)
+            });
+            
+            console.log('Server response status:', response.status);
+            
+            if (!response.ok) {
+              const errorText = await response.text();
+              console.error('Server error response:', errorText);
+              throw new Error(`Server responded with status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            console.log('Server success response:', data);
+            
+            // Show response message
+            alert(data.message);
+            
+            // If successful, reset the form
+            if (data.status === 'success') {
+              contactForm.reset();
+            }
+          } catch (error) {
+            console.error('Detailed error:', error);
+            alert('An error occurred while sending your message. Please try again later.');
+          }
+        });
+      }
+      
+      // Add smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          const targetId = this.getAttribute('href');
+          if (targetId === '#') return;
+          
+          const targetElement = document.querySelector(targetId);
+          if (targetElement) {
+            window.scrollTo({
+              top: targetElement.offsetTop - 80,
+              behavior: 'smooth'
+            });
+          }
+        });
+      });
+    });
+  </script>
+  <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+  <df-messenger
+    intent="WELCOME"
+    chat-title="Nova-Mind"
+    agent-id="54b39757-06eb-4e1b-86b9-900d4bb8af67"
+    language-code="en"
+  ></df-messenger>
+</body>
+</html> 

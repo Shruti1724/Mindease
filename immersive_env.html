@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Stress Relief AR Portals</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- A-Frame library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aframe/1.4.2/aframe.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    .portal-buttons {
+      position: fixed;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      z-index: 100;
+    }
+    .portal-button {
+      background-color: rgba(255, 255, 255, 0.8);
+      color: #333;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .portal-button:hover {
+      background-color: rgba(255, 255, 255, 1);
+      transform: scale(1.05);
+    }
+    .instructions {
+      position: fixed;
+      top: 20px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 10px;
+      z-index: 100;
+    }
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #000;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      transition: opacity 1s ease;
+    }
+    .spinner {
+      border: 5px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top: 5px solid white;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div id="loading-screen" class="loading-screen">
+    <div class="spinner"></div>
+    <p>Loading AR Experience...</p>
+  </div>
+
+  <div class="instructions" id="instructions">
+    Look around by moving your device or dragging the screen
+  </div>
+
+  <div class="portal-buttons">
+    <button class="portal-button" onclick="changeEnvironment('beach')">Beach</button>
+    <button class="portal-button" onclick="changeEnvironment('forest')">Forest</button>
+    <button class="portal-button" onclick="changeEnvironment('night')">Night Sky</button>
+  </div>
+
+  <a-scene loading-screen="enabled: false">
+    <a-assets>
+      <!-- 360° Environment Images -->
+      <img id="beach-img" src="beach.jpg" alt="Beach 360" crossorigin="anonymous">
+      <img id="forest-img" src="forest.jpg" alt="Forest 360" crossorigin="anonymous">
+      <img id="night-img" src="nightsky.jpg" alt="Night Sky 360" crossorigin="anonymous">
+      
+      <!-- Ambient Sounds -->
+      <audio id="beach-sound" src="ocean-waves-250310.mp3" preload="auto"></audio>
+      <audio id="forest-sound" src="forest-ambience-296528.mp3" preload="auto"></audio>
+      <audio id="night-sound" src="moonlit-night-320134.mp3" preload="auto"></audio>
+    </a-assets>
+
+    <!-- Camera with cursor for interaction -->
+    <a-entity camera look-controls position="0 1.6 0">
+      <a-entity cursor="fuse: false" 
+                position="0 0 -1"
+                geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+                material="color: white; shader: flat"></a-entity>
+    </a-entity>
+
+    <!-- 360° Sky Environment -->
+    <a-sky id="environment" src="#beach-img" rotation="0 -90 0"></a-sky>
+    
+    <!-- Ambient Sound -->
+    <a-entity id="ambient-sound" sound="src: #beach-sound; autoplay: true; loop: true; volume: 0.5"></a-entity>
+    
+    <!-- Ambient Light -->
+    <a-light type="ambient" intensity="1.2"></a-light>
+  </a-scene>
+
+  <script>
+    // Current environment tracker
+    let currentEnvironment = 'beach';
+    
+    // Function to change environment
+    function changeEnvironment(envType) {
+      const sky = document.getElementById('environment');
+      const sound = document.getElementById('ambient-sound');
+      
+      // Stop current sound
+      sound.components.sound.pauseSound();
+      
+      // Apply transition effect
+      sky.setAttribute('material', 'opacity', 0);
+      
+      // Timeout for smooth transition
+      setTimeout(() => {
+        // Update environment
+        currentEnvironment = envType;
+        
+        // Set new sky image
+        sky.setAttribute('src', `#${envType}-img`);
+        
+        // Set new ambient sound
+        sound.setAttribute('sound', 'src', `#${envType}-sound`);
+        sound.components.sound.playSound();
+        
+        // Fade in the new environment
+        sky.setAttribute('material', 'opacity', 1);
+      }, 500);
+    }
+    
+    // Handle loading screen
+    window.addEventListener('load', function() {
+      // Instead of using true asset loading detection, we'll use a timeout for the placeholder
+      setTimeout(() => {
+        const loadingScreen = document.getElementById('loading-screen');
+        loadingScreen.style.opacity = '0';
+        setTimeout(() => {
+          loadingScreen.style.display = 'none';
+        }, 1000);
+      }, 2000);
+      
+      // Show/hide instructions 
+      setTimeout(() => {
+        const instructions = document.getElementById('instructions');
+        instructions.style.opacity = '0';
+        setTimeout(() => {
+          instructions.style.display = 'none';
+        }, 1000);
+      }, 5000);
+    });
+  </script>
+</body>
+</html>

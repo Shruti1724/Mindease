@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Positivity Challenges - MindEase</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    .challenges-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      padding: 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .challenge-item {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .challenge-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .challenge-icon {
+      width: 70px;
+      height: 70px;
+      background: var(--secondary-color);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .challenge-icon i {
+      font-size: 30px;
+      color: var(--dark-color);
+    }
+
+    .challenge-item h3 {
+      color: var(--dark-color);
+      margin-bottom: 15px;
+      font-size: 1.2rem;
+    }
+
+    .challenge-item p {
+      color: #666;
+      margin-bottom: 20px;
+      line-height: 1.5;
+      flex-grow: 1;
+    }
+
+    .challenge-btn {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      width: 100%;
+    }
+
+    .challenge-btn:hover {
+      background: var(--dark-color);
+      transform: translateY(-2px);
+    }
+
+    .challenge-btn.completed {
+      background: var(--accent-color);
+      cursor: default;
+    }
+
+    .page-hero {
+      height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: var(--light-color);
+      position: relative;
+      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1506126613408-eca07ce68773?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+    }
+
+    .page-hero .hero-content {
+      max-width: 800px;
+      padding: 0 20px;
+      animation: fadeIn 1s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .page-hero h1 {
+      font-size: 3.5rem;
+      margin-bottom: 20px;
+      color: var(--light-color);
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .page-hero p {
+      font-size: 1.3rem;
+      margin-bottom: 30px;
+      line-height: 1.6;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    .challenges-importance {
+      background-color: var(--secondary-color);
+      padding: 80px 0;
+      color: var(--dark-color);
+    }
+
+    .importance-content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .importance-text h3 {
+      color: var(--dark-color);
+      margin: 30px 0 15px;
+      font-size: 1.5rem;
+    }
+
+    .importance-text p {
+      color: #666;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+
+    .importance-cta {
+      margin-top: 40px;
+    }
+
+    @media (max-width: 768px) {
+      .page-hero {
+        height: 50vh;
+      }
+      
+      .page-hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      .page-hero p {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index1.html" class="logo">
+        <i class="fas fa-brain"></i>
+        MindEase
+      </a>
+      <ul id="menu">
+        <li><a href="index1.html">Home</a></li>
+        <li><a href="meditation.html">Meditation</a></li>
+        <li><a href="breathing.html">Breathing</a></li>
+        <li><a href="journal.html">Journal</a></li>
+        <li><a href="challenges.html" class="active">Challenges</a></li>
+        <li><a href="index1.html#about">Find Help</a></li>
+        <li><a href="index1.html" id="logoutLink">Logout</a></li>
+      </ul>
+      <div class="menu-toggle">
+        <i class="fas fa-bars"></i>
+      </div>
+    </nav>
+  </header>
+
+  <section id="challenges-hero" class="page-hero">
+    <div class="hero-content">
+      <h1>Daily Positivity Challenges</h1>
+      <p>Small actions that can make a big difference in your day</p>
+    </div>
+  </section>
+
+  <section id="challenges">
+    <div class="container">
+      <div class="section-header">
+        <h2>Daily Positivity Challenges</h2>
+        <p>Complete these challenges to boost your mood and maintain a positive mindset throughout your day.</p>
+      </div>
+      <div id="challenges-grid" class="challenges-grid">
+        <div class="challenge-item">
+          <div class="challenge-icon">
+            <i class="fas fa-comment-dots"></i>
+          </div>
+          <h3>Give a Compliment</h3>
+          <p>Spread positivity by giving a genuine compliment to someone today.</p>
+          <button class="challenge-btn" onclick="completeChallenge(1)">Complete Challenge</button>
+        </div>
+
+        <div class="challenge-item">
+          <div class="challenge-icon">
+            <i class="fas fa-walking"></i>
+          </div>
+          <h3>Take a Walk</h3>
+          <p>Go for a 10-minute walk outside to clear your mind and get some fresh air.</p>
+          <button class="challenge-btn" onclick="completeChallenge(2)">Complete Challenge</button>
+        </div>
+
+        <div class="challenge-item">
+          <div class="challenge-icon">
+            <i class="fas fa-pen-fancy"></i>
+          </div>
+          <h3>Gratitude List</h3>
+          <p>Write down three things you're grateful for today.</p>
+          <button class="challenge-btn" onclick="completeChallenge(3)">Complete Challenge</button>
+        </div>
+
+        <div class="challenge-item">
+          <div class="challenge-icon">
+            <i class="fas fa-music"></i>
+          </div>
+          <h3>Dance Break</h3>
+          <p>Put on your favorite song and dance for 5 minutes.</p>
+          <button class="challenge-btn" onclick="completeChallenge(4)">Complete Challenge</button>
+        </div>
+
+        <div class="challenge-item">
+          <div class="challenge-icon">
+            <i class="fas fa-book"></i>
+          </div>
+          <h3>Read Something</h3>
+          <p>Read an article or a chapter of a book you enjoy.</p>
+          <button class="challenge-btn" onclick="completeChallenge(5)">Complete Challenge</button>
+        </div>
+
+        <div class="challenge-item">
+          <div class="challenge-icon">
+            <i class="fas fa-utensils"></i>
+          </div>
+          <h3>Healthy Snack</h3>
+          <p>Have a healthy snack and take time to enjoy it mindfully.</p>
+          <button class="challenge-btn" onclick="completeChallenge(6)">Complete Challenge</button>
+        </div>
+
+        <div class="challenge-item">
+          <div class="challenge-icon">
+            <i class="fas fa-hands-helping"></i>
+          </div>
+          <h3>Help Someone</h3>
+          <p>Offer help to someone without being asked.</p>
+          <button class="challenge-btn" onclick="completeChallenge(7)">Complete Challenge</button>
+        </div>
+
+        <div class="challenge-item">
+          <div class="challenge-icon">
+            <i class="fas fa-sun"></i>
+          </div>
+          <h3>Sunshine Break</h3>
+          <p>Spend 5 minutes in the sunlight (or by a window if it's cloudy).</p>
+          <button class="challenge-btn" onclick="completeChallenge(8)">Complete Challenge</button>
+        </div>
+
+        <div class="challenge-item">
+          <div class="challenge-icon">
+            <i class="fas fa-phone"></i>
+          </div>
+          <h3>Connect</h3>
+          <p>Call or message a friend or family member you haven't talked to recently.</p>
+          <button class="challenge-btn" onclick="completeChallenge(9)">Complete Challenge</button>
+        </div>
+
+        <div class="challenge-item">
+          <div class="challenge-icon">
+            <i class="fas fa-seedling"></i>
+          </div>
+          <h3>Plant Care</h3>
+          <p>Water your plants or spend time with nature.</p>
+          <button class="challenge-btn" onclick="completeChallenge(10)">Complete Challenge</button>
+        </div>
+
+        <div class="challenge-item">
+          <div class="challenge-icon">
+            <i class="fas fa-paint-brush"></i>
+          </div>
+          <h3>Creative Time</h3>
+          <p>Do something creative for 10 minutes (draw, write, craft).</p>
+          <button class="challenge-btn" onclick="completeChallenge(11)">Complete Challenge</button>
+        </div>
+
+        <div class="challenge-item">
+          <div class="challenge-icon">
+            <i class="fas fa-bed"></i>
+          </div>
+          <h3>Rest Break</h3>
+          <p>Take a 10-minute break to rest and recharge.</p>
+          <button class="challenge-btn" onclick="completeChallenge(12)">Complete Challenge</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="challenges-importance" class="challenges-importance">
+    <div class="container">
+      <div class="section-header">
+        <h2>Why Daily Positivity Matters</h2>
+        <p>Discover the transformative power of small positive actions</p>
+      </div>
+      <div class="importance-content">
+        <div class="importance-text">
+          <h3>The Science Behind Positivity</h3>
+          <p>Research has shown that engaging in small positive actions daily can rewire your brain to focus more on positive experiences. This "positivity bias" helps you build resilience and cope better with life's challenges.</p>
+          
+          <h3>Positivity for Modern Life</h3>
+          <p>In our fast-paced, often stressful world, it's easy to get caught up in negativity. Daily positivity challenges offer a simple way to counteract this, helping you maintain a balanced perspective and emotional well-being.</p>
+          
+          <h3>Who Can Benefit?</h3>
+          <p>Everyone can benefit from daily positivity challenges, regardless of their current mental state. Whether you're dealing with stress, anxiety, depression, or simply want to enhance your overall well-being, these small actions can make a significant difference in your life.</p>
+          
+          <div class="importance-cta">
+            <a href="journal.html" class="btn">Track Your Progress</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <i class="fas fa-brain"></i>
+          MindEase
+        </div>
+      </div>
+      <p class="copyright">&copy; 2024 MindEase. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Check if user is logged in
+    document.addEventListener('DOMContentLoaded', function() {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        window.location.href = 'index1.html';
+      }
+    });
+
+    // Menu toggle functionality
+    document.querySelector('.menu-toggle').addEventListener('click', function() {
+      document.querySelector('#menu').classList.toggle('active');
+    });
+
+    // Challenge completion functionality
+    function completeChallenge(challengeId) {
+      const button = document.querySelector(`[onclick="completeChallenge(${challengeId})"]`);
+      if (button && !button.classList.contains('completed')) {
+        button.textContent = 'Completed!';
+        button.classList.add('completed');
+        
+        // Store completion in localStorage
+        const today = new Date().toISOString().split('T')[0];
+        const completedChallenges = JSON.parse(localStorage.getItem('completedChallenges') || '{}');
+        if (!completedChallenges[today]) {
+          completedChallenges[today] = [];
+        }
+        completedChallenges[today].push(challengeId);
+        localStorage.setItem('completedChallenges', JSON.stringify(completedChallenges));
+        
+        // Show success message
+        alert('Challenge completed! Keep up the great work!');
+      }
+    }
+
+    // Check and reset daily challenges
+    function checkDailyChallenges() {
+      const today = new Date().toISOString().split('T')[0];
+      const completedChallenges = JSON.parse(localStorage.getItem('completedChallenges') || '{}');
+      
+      // Reset challenges if it's a new day
+      if (!completedChallenges[today]) {
+        const buttons = document.querySelectorAll('.challenge-btn');
+        buttons.forEach(button => {
+          button.textContent = 'Complete Challenge';
+          button.classList.remove('completed');
+        });
+      } else {
+        // Mark completed challenges
+        completedChallenges[today].forEach(challengeId => {
+          const button = document.querySelector(`[onclick="completeChallenge(${challengeId})"]`);
+          if (button) {
+            button.textContent = 'Completed!';
+            button.classList.add('completed');
+          }
+        });
+      }
+    }
+
+    // Initialize challenges when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      checkDailyChallenges();
+    });
+  </script>
+</body>
+</html> 

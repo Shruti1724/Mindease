@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Journal-mindease</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <header>
+    <nav>
+      <a href="index1.html" class="logo">
+        <i class="fas fa-brain"></i>
+        MindEase
+      </a>
+      <ul id="menu">
+        <li><a href="index1.html">Home</a></li>
+        <li><a href="index1.html#about">About</a></li>
+        <li><a href="meditation.html">Meditation</a></li>
+        <li><a href="breathing.html">Breathing</a></li>
+        <li><a href="journal.html">Journal</a></li>
+        <li><a href="find_help.html">Find Help</a></li>
+        <li><a href="login.html" id="loginLink">Login</a></li>
+        <li><a href="#" id="logoutLink" style="display: none;">Logout</a></li>
+      </ul>
+      <div class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+      </div>
+    </nav>
+  </header>
+  
+  <section id="journal-hero" class="page-hero">
+    <div class="hero-content">
+      <h1>Daily Journal</h1>
+      <p>Track your thoughts, feelings, and progress on your mental wellness journey</p>
+    </div>
+  </section>
+
+  <section id="journal">
+    <div class="container">
+      <div class="section-header">
+        <h2>Daily Journal</h2>
+        <p>Track your thoughts, feelings, and progress on your mental wellness journey</p>
+      </div>
+      
+      <div class="journal-container">
+        <div class="journal-content">
+          <div class="journal-entry-area">
+            <div class="journal-header">
+              <h3 class="journal-title">Today's Reflection</h3>
+              <div class="journal-date">
+                <label>Date:</label>
+                <input type="date" id="journalDate" class="date-input">
+              </div>
+            </div>
+
+            <div class="journal-prompts">
+              <span class="prompt-pill" onclick="insertPrompt('What am I grateful for today?')">Gratitude</span>
+              <span class="prompt-pill" onclick="insertPrompt('How am I feeling right now and why?')">Current Feelings</span>
+              <span class="prompt-pill" onclick="insertPrompt('What was challenging today and how did I handle it?')">Challenges</span>
+              <span class="prompt-pill" onclick="insertPrompt('What brought me joy today?')">Joy</span>
+              <span class="prompt-pill" onclick="insertPrompt('What\'s one thing I learned today?')">Learning</span>
+            </div>
+            
+            <textarea id="journalText" class="journal-textarea" placeholder="Write your thoughts here..."></textarea>
+            
+            <div class="tag-container">
+              <div class="journal-tag">anxiety <i class="fas fa-times"></i></div>
+              <div class="journal-tag">progress <i class="fas fa-times"></i></div>
+              <div class="tag-input">
+                <input type="text" placeholder="Add tag">
+                <i class="fas fa-plus"></i>
+              </div>
+            </div>
+            
+            <div class="journal-controls">
+              <button class="btn" onclick="saveJournal()">Save Entry</button>
+              <button class="btn" style="background-color: var(--accent-color);" onclick="clearJournal()">Clear</button>
+            </div>
+          </div>
+
+          <div class="calendar-container">
+            <div class="calendar-header">
+              <div class="calendar-nav">
+                <button id="prevYear" class="btn btn-secondary">« Year</button>
+                <button id="prevMonth" class="btn btn-secondary">« Month</button>
+              </div>
+              <h2 id="calendarMonth">April 2025</h2>
+              <div class="calendar-nav">
+                <button id="nextMonth" class="btn btn-secondary">Month »</button>
+                <button id="nextYear" class="btn btn-secondary">Year »</button>
+              </div>
+            </div>
+            <div class="calendar-weekdays">
+              <div>Sun</div>
+              <div>Mon</div>
+              <div>Tue</div>
+              <div>Wed</div>
+              <div>Thu</div>
+              <div>Fri</div>
+              <div>Sat</div>
+            </div>
+            <div id="calendarGrid" class="calendar-grid"></div>
+          </div>
+
+          <div class="journal-stats">
+            <h3>Your Journal Stats</h3>
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-value" id="totalEntries">0</div>
+                <div class="stat-label">Total Entries</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="monthlyEntries">0</div>
+                <div class="stat-label">This Month</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="mostCommonMood">-</div>
+                <div class="stat-label">Most Common Mood</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="streak">0</div>
+                <div class="stat-label">Day Streak</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <i class="fas fa-brain"></i> MindEase
+        </div>
+      </div>
+      <div class="copyright">
+        <p>&copy; 2025 MindEase. All rights reserved.</p>
+        <p> Made by Shruti Jaggi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script src="journal.js"></script>
+  <script>
+    // Journal Entry Management
+    let journalEntries = [];
+    let currentUser = null;
+
+    // Load journal entries from database on page load
+    document.addEventListener('DOMContentLoaded', async function() {
+      // Check if user is logged in
+      const userData = localStorage.getItem('userData');
+      const token = localStorage.getItem('token');
+      const loginLink = document.getElementById('loginLink');
+      const logoutLink = document.getElementById('logoutLink');
+      
+      console.log('Checking login status:', { userData, token }); // Debug log
+      
+      // First check if we have the necessary data
+      if (!userData || !token) {
+        console.log('No user data or token found'); // Debug log
+        loginLink.style.display = 'block';
+        logoutLink.style.display = 'none';
+        window.location.href = 'login.html';
+        return;
+      }
+
+      try {
+        // Parse user data and update UI
+        currentUser = JSON.parse(userData);
+        console.log('Current user:', currentUser); // Debug log
+        loginLink.style.display = 'none';
+        logoutLink.style.display = 'block';
+        
+        // Try to load journal entries
+        console.log('Fetching journal entries...'); // Debug log
+        const response = await fetch('http://localhost:3000/api/journal/entries', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        console.log('Response status:', response.status); // Debug log
+        
+        if (response.ok) {
+          journalEntries = await response.json();
+          console.log('Journal entries loaded:', journalEntries); // Debug log
+          updateJournalHistory();
+          updateStats();
+        } else {
+          const errorData = await response.json();
+          console.error('Failed to load journal entries:', errorData); // Debug log
+          // If the token is invalid, clear it and redirect to login
+          localStorage.removeItem('token');
+          localStorage.removeItem('userData');
+          window.location.href = 'login.html';
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        // If there's a server error, show a message but don't redirect
+        alert('Error connecting to the server. Please try again later.');
+      }
+      
+      // Set today's date as default
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('journalDate').value = today;
+      
+      // Add logout functionality
+      logoutLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        localStorage.removeItem('userData');
+        localStorage.removeItem('token');
+        alert('You have been successfully logged out.');
+        window.location.href = 'index1.html';
+      });
+      
+      // Menu toggle functionality
+      document.getElementById('menuToggle').addEventListener('click', function() {
+        document.getElementById('menu').classList.toggle('active');
+      });
+    });
+
+    // Save journal entry
+    async function saveJournal() {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('Your session has expired. Please log in again.');
+        window.location.href = 'login.html';
+        return;
+      }
+
+      const date = document.getElementById('journalDate').value;
+      const text = document.getElementById('journalText').value;
+      const mood = document.querySelector('.mood-option.active')?.querySelector('.mood-label')?.textContent || 'Not specified';
+      const tags = getSelectedTags();
+      
+      if (!date || !text) {
+        alert('Please select a date and write something in your journal.');
+        return;
+      }
+      
+      try {
+        const response = await fetch('http://localhost:3000/api/journal/entries', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            entryDate: date,
+            content: text,
+            mood: mood,
+            tags: tags
+          })
+        });
+        
+        if (response.ok) {
+          const result = await response.json();
+          journalEntries.unshift({
+            id: result.id,
+            entry_date: date,
+            content: text,
+            mood: mood,
+            tags: tags
+          });
+          
+          updateJournalHistory();
+          updateStats();
+          clearJournal();
+          alert('Journal entry saved successfully!');
+        } else {
+          const errorData = await response.json();
+          if (errorData.error.includes('Unauthorized')) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('userData');
+            window.location.href = 'login.html';
+          } else {
+            throw new Error(errorData.error || 'Failed to save journal entry');
+          }
+        }
+      } catch (error) {
+        console.error('Error saving journal entry:', error);
+        alert('Failed to save journal entry: ' + error.message);
+      }
+    }
+
+    // Clear journal entry
+    function clearJournal() {
+      document.getElementById('journalText').value = '';
+      document.querySelectorAll('.mood-option').forEach(option => {
+        option.classList.remove('active');
+      });
+      clearTags();
+    }
+
+    // Tag Management
+    function getSelectedTags() {
+      const tags = [];
+      document.querySelectorAll('.journal-tag').forEach(tag => {
+        if (!tag.classList.contains('tag-input')) {
+          // Extract just the tag text without the close icon
+          const tagText = tag.textContent.trim().replace('×', '').trim();
+          tags.push(tagText);
+        }
+      });
+      return tags;
+    }
+
+    function clearTags() {
+      const tagContainer = document.querySelector('.tag-container');
+      const tagInput = document.querySelector('.tag-input');
+      tagContainer.innerHTML = '';
+      tagContainer.appendChild(tagInput);
+    }
+
+    // Add new tag
+    document.addEventListener('DOMContentLoaded', function() {
+      const tagInput = document.querySelector('.tag-input input');
+      if (tagInput) {
+        tagInput.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter' && this.value.trim()) {
+            const tag = document.createElement('div');
+            tag.className = 'journal-tag';
+            tag.innerHTML = `${this.value.trim()} <i class="fas fa-times" onclick="this.parentElement.remove()"></i>`;
+            
+            const tagInput = document.querySelector('.tag-input');
+            tagInput.parentElement.insertBefore(tag, tagInput);
+            
+            this.value = '';
+          }
+        });
+      }
+      
+      // Add click event to existing tag close buttons
+      document.querySelectorAll('.journal-tag i.fa-times').forEach(icon => {
+        icon.addEventListener('click', function() {
+          this.parentElement.remove();
+        });
+      });
+    });
+
+    // Update journal history display
+    function updateJournalHistory() {
+      const entryList = document.querySelector('.entry-list');
+      if (!entryList) return;
+      
+      entryList.innerHTML = '';
+      
+      journalEntries
+        .slice(0, 4)
+        .forEach(entry => {
+          const entryCard = document.createElement('div');
+          entryCard.className = 'entry-card';
+          
+          const date = new Date(entry.entry_date).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          });
+          
+          entryCard.innerHTML = `
+            <span class="entry-date">${date}</span>
+            <div class="entry-mood">
+              <i class="fas fa-${getMoodIcon(entry.mood)}"></i>
+              ${entry.mood}
+            </div>
+          `;
+          
+          entryList.appendChild(entryCard);
+        });
+    }
+
+    // Update stats display
+    async function updateStats() {
+      if (!currentUser) return;
+      
+      try {
+        const response = await fetch('http://localhost:3000/api/journal/stats', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        
+        if (response.ok) {
+          const stats = await response.json();
+          console.log('Received stats:', stats); // Debug log
+          
+          // Update total entries
+          const totalElement = document.querySelector('.stat-card:nth-child(1) .stat-value');
+          if (totalElement) totalElement.textContent = stats.total || 0;
+          
+          // Update monthly entries
+          const monthlyElement = document.querySelector('.stat-card:nth-child(2) .stat-value');
+          if (monthlyElement) monthlyElement.textContent = stats.monthly || 0;
+          
+          // Update most common mood
+          const moodElement = document.querySelector('.stat-card:nth-child(3) .stat-value');
+          if (moodElement) moodElement.textContent = getMoodEmoji(stats.mostCommonMood || 'Not specified');
+          
+          // Update streak
+          const streakElement = document.querySelector('.stat-card:nth-child(4) .stat-value');
+          if (streakElement) streakElement.textContent = `${stats.streak || 0} days`;
+        } else {
+          console.error('Failed to fetch journal stats:', await response.text());
+        }
+      } catch (error) {
+        console.error('Error updating stats:', error);
+      }
+    }
+
+    // Helper functions
+    function getMoodIcon(mood) {
+      const icons = {
+        'Great': 'smile-beam',
+        'Good': 'smile',
+        'Okay': 'meh',
+        'Down': 'frown',
+        'Stressed': 'tired',
+        'Anxious': 'worried'
+      };
+      return icons[mood] || 'question';
+    }
+
+    function getMoodEmoji(mood) {
+      const emojis = {
+        'Great': '😄',
+        'Good': '🙂',
+        'Okay': '😐',
+        'Down': '😔',
+        'Stressed': '😣',
+        'Anxious': '😰'
+      };
+      return emojis[mood] || '❓';
+    }
+
+    function calculateStreak() {
+      if (journalEntries.length === 0) return 0;
+      
+      const sortedEntries = journalEntries
+        .map(entry => new Date(entry.entry_date))
+        .sort((a, b) => b - a);
+      
+      let streak = 1;
+      let currentDate = new Date(sortedEntries[0]);
+      
+      for (let i = 1; i < sortedEntries.length; i++) {
+        const prevDate = new Date(sortedEntries[i]);
+        const diffDays = Math.floor((currentDate - prevDate) / (1000 * 60 * 60 * 24));
+        
+        if (diffDays === 1) {
+          streak++;
+          currentDate = prevDate;
+        } else {
+          break;
+        }
+      }
+      
+      return streak;
+    }
+  </script>
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+  <df-messenger
+    intent="WELCOME"
+    chat-title="Nova-Mind"
+    agent-id="54b39757-06eb-4e1b-86b9-900d4bb8af67"
+    language-code="en"
+  ></df-messenger>
+
+  <!-- Event Modal -->
+  <div id="eventModal" class="modal">
+    <div class="modal-content">
+      <span id="closeModal" class="close">&times;</span>
+      <h3>Events for <span id="modalDate"></span></h3>
+      
+      <div id="eventsList" class="events-list"></div>
+      
+      <h4>Add New Event</h4>
+      <form id="eventForm">
+        <input type="hidden" id="eventDate">
+        <div class="form-group">
+          <label for="eventTitle">Event Title</label>
+          <input type="text" id="eventTitle" required>
+        </div>
+        <div class="form-group">
+          <label for="eventDescription">Description</label>
+          <textarea id="eventDescription" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Event</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

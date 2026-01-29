@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register - MindEase</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap');
+
+    :root {
+      --primary-color: #8D7B68;
+      --secondary-color: #F1DEC9;
+      --accent-color: #C8B6A6;
+      --dark-color: #5A4330;
+      --light-color: #F8F4EA;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--light-color);
+      color: var(--dark-color);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .register-container {
+      max-width: 500px;
+      margin: 100px auto;
+      padding: 30px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .register-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .register-header h1 {
+      color: var(--primary-color);
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .register-header p {
+      color: var(--dark-color);
+      opacity: 0.8;
+    }
+
+    .register-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group label {
+      color: var(--dark-color);
+      font-weight: 500;
+    }
+
+    .form-group input {
+      padding: 12px;
+      border: 1px solid var(--accent-color);
+      border-radius: 5px;
+      font-size: 1rem;
+      background-color: var(--light-color);
+      transition: border-color 0.3s ease;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+
+    .terms-privacy {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+    }
+
+    .terms-privacy a {
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .terms-privacy a:hover {
+      color: var(--dark-color);
+    }
+
+    .register-btn {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .register-btn:hover {
+      background-color: var(--dark-color);
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.9rem;
+    }
+
+    .login-link a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .login-link a:hover {
+      color: var(--dark-color);
+    }
+
+    .social-register {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .social-register p {
+      margin-bottom: 15px;
+      color: var(--dark-color);
+      opacity: 0.8;
+    }
+
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .social-icons a {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--light-color);
+      border-radius: 50%;
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .social-icons a:hover {
+      background-color: var(--primary-color);
+      color: white;
+      transform: translateY(-3px);
+    }
+
+    @media (max-width: 768px) {
+      .register-container {
+        margin: 80px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index1.html" class="logo">
+        <i class="fas fa-brain"></i>
+        MindEase
+      </a>
+      <ul id="menu">
+        <li><a href="index1.html">Home</a></li>
+        <li><a href="index1.html#about">About</a></li>
+        <li><a href="meditation.html">Meditation</a></li>
+        <li><a href="breathing.html">Breathing</a></li>
+        <li><a href="journal.html">Journal</a></li>
+        <li><a href="find_help.html">Find Help</a></li>
+        <li><a href="index1.html#contact">Contact</a></li>
+        <li><a href="login.html">Login</a></li>
+      </ul>
+      <div class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="register-container">
+      <div class="register-header">
+        <h1>Create Account</h1>
+        <p>Join MindEase to start your wellness journey</p>
+      </div>
+      <form class="register-form" id="registerForm">
+        <div class="form-group">
+          <label for="fullname">Full Name</label>
+          <input type="text" id="fullname" name="fullname" required placeholder="Enter your full name">
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required placeholder="Enter your email">
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required placeholder="Create a password">
+        </div>
+        <div class="form-group">
+          <label for="confirm-password">Confirm Password</label>
+          <input type="password" id="confirm-password" name="confirm-password" required placeholder="Confirm your password">
+        </div>
+        <div class="terms-privacy">
+          <input type="checkbox" id="terms" name="terms" required>
+          <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+        </div>
+        <button type="submit" class="register-btn">Create Account</button>
+      </form>
+      <div class="login-link">
+        <p>Already have an account? <a href="login.html">Sign in</a></p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <i class="fas fa-brain"></i> MindEase
+        </div>
+      </div>
+      <div class="copyright">
+        <p>&copy; 2025 MindEase. All rights reserved.</p>
+        <p>Made by Shruti Jaggi</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Menu toggle functionality
+    document.getElementById('menuToggle').addEventListener('click', function () {
+      document.getElementById('menu').classList.toggle('active');
+    });
+  
+    // Form submission
+    document.getElementById('registerForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+  
+      const fullname = document.getElementById('fullname').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+  
+      // Validate form
+      if (!fullname || !email || !password || !confirmPassword) {
+        alert('Please fill in all fields');
+        return;
+      }
+  
+      if (password !== confirmPassword) {
+        alert('Passwords do not match!');
+        return;
+      }
+  
+      try {
+        console.log('Sending registration request...');
+        const res = await fetch('http://localhost:3000/api/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ name: fullname, email, password })
+        });
+  
+        console.log('Response received:', res.status);
+        const data = await res.json();
+        console.log('Response data:', data);
+  
+        if (res.ok) {
+          alert(data.message);
+          window.location.href = 'login.html';
+        } else {
+          alert(data.message || 'Registration failed. Please try again.');
+        }
+      } catch (error) {
+        console.error('Registration error:', error);
+        alert('Connection error. Please make sure the server is running.');
+      }
+    });
+  </script>
+  
+</body>
+</html> 
